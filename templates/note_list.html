@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}Notes{% endblock %}
+{% block content %}
+<h2 class="text-center">Your Notes</h2>
+  
+    <div class="container mt-2 w-75">
+    
+
+        <form method="post">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+                <div class="form-group mb-2">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}: </label>
+                    {{ field|add_class:'form-control' }}
+                    {% for error in field.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <button type="submit" class="btn btn-success mt-2">
+                <span class="glyphicon glyphicon-ok"></span> Add Note
+                </button>
+            </div>
+        </form>
+    </div>    
+  <hr>
+  <div class="container">  
+  {% if notes %}
+    <ul>
+      {% for note in notes %}
+        <li>
+          <strong>{{ note.title }}</strong><br>
+          {{ note.content }}<br>
+          <small>Created: {{ note.created_at }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have no notes yet.</p>
+  {% endif %}
+  </div>
+{% endblock %}
+6.4 Test Note Creatio
